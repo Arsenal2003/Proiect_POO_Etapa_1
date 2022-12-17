@@ -1,3 +1,5 @@
+package Input;
+
 import java.util.ArrayList;
 
 public class FilterOption {
@@ -18,5 +20,13 @@ public class FilterOption {
 
     public void setGenre(ArrayList<String> genre) {
         this.genre = genre;
+    }
+
+    @Override
+    public String toString() {
+        return "FilterOption{" +
+                "actors=" + actors +
+                ", genre=" + genre +
+                '}';
     }
 }

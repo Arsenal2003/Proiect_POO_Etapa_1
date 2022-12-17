@@ -1,3 +1,5 @@
+package Input;
+
 public class Filter {
     private FilterOption contains;
     private SortMovies sort;
@@ -37,5 +39,21 @@ public class Filter {
         public void setDuration(String duration) {
             this.duration = duration;
         }
+
+        @Override
+        public String toString() {
+            return "SortMovies{" +
+                    "rating='" + rating + '\'' +
+                    ", duration='" + duration + '\'' +
+                    '}';
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Filter{" +
+                "contains=" + contains +
+                ", sort=" + sort +
+                '}';
     }
 }

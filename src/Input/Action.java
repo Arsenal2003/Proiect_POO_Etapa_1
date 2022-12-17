@@ -1,5 +1,6 @@
+package Input;
 
-public class Action {
+public final class Action {
     private String type;
     private String page;
     private String feature;
@@ -13,11 +14,14 @@ public class Action {
     private Filter filters;
 
 
+    public Action() {
+    }
+
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(final String type) {
         this.type = type;
     }
 
@@ -25,7 +29,7 @@ public class Action {
         return page;
     }
 
-    public void setPage(String page) {
+    public void setPage(final String page) {
         this.page = page;
     }
 
@@ -33,7 +37,7 @@ public class Action {
         return feature;
     }
 
-    public void setFeature(String feature) {
+    public void setFeature(final String feature) {
         this.feature = feature;
     }
 
@@ -41,7 +45,7 @@ public class Action {
         return credentials;
     }
 
-    public void setCredentials(userCredentials credentials) {
+    public void setCredentials(final userCredentials credentials) {
         this.credentials = credentials;
     }
 
@@ -49,7 +53,7 @@ public class Action {
         return startsWith;
     }
 
-    public void setStartsWith(String startsWith) {
+    public void setStartsWith(final String startsWith) {
         this.startsWith = startsWith;
     }
 
@@ -57,7 +61,7 @@ public class Action {
         return movie;
     }
 
-    public void setMovie(String movie) {
+    public void setMovie(final String movie) {
         this.movie = movie;
     }
 
@@ -65,7 +69,7 @@ public class Action {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(final int count) {
         this.count = count;
     }
 
@@ -73,7 +77,7 @@ public class Action {
         return rate;
     }
 
-    public void setRate(int rate) {
+    public void setRate(final int rate) {
         this.rate = rate;
     }
 
@@ -81,13 +85,13 @@ public class Action {
         return filters;
     }
 
-    public void setFilters(Filter filters) {
+    public void setFilters(final Filter filters) {
         this.filters = filters;
     }
 
     @Override
     public String toString() {
-        return "Action{" +
+        return "InpuClasses.Action{" +
                 "type='" + type + '\'' +
                 ", page='" + page + '\'' +
                 ", feature='" + feature + '\'' +

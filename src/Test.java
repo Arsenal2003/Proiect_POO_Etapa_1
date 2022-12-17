@@ -174,7 +174,7 @@ public final class Test {
         }
 
         if (!TEST_OUT_FILE.exists()) {
-            printMessage(testFileName, "Output file not found. Skipping test...");
+            printMessage(testFileName, "Output.Output file not found. Skipping test...");
         } else {
             try {
                 var actual = objectMapper.readTree(TEST_OUT_FILE);
@@ -190,7 +190,7 @@ public final class Test {
                     printMessage(testFileName, "0/" + testScore, true);
                 }
             } catch (IOException e) {
-                printMessage(testFileName, "Output file badly formatted. Skipping test...");
+                printMessage(testFileName, "Output.Output file badly formatted. Skipping test...");
             }
         }
     }

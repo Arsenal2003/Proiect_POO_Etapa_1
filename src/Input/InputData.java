@@ -1,3 +1,5 @@
+package Input;
+
 import java.util.ArrayList;
 
 public class InputData {
@@ -31,7 +33,7 @@ public class InputData {
 
     @Override
     public String toString() {
-        return "InputData{" +
+        return "InpuClasses.InputData{" +
                 "users=" + users +
                 ", movies=" + movies +
                 ", actions=" + actions +

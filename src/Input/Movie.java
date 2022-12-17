@@ -1,3 +1,8 @@
+package Input;
+
+import Output.Output;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.util.ArrayList;
 
 public class Movie {
@@ -7,7 +12,9 @@ public class Movie {
     private ArrayList<String> genres;
     private ArrayList<String> actors;
     private ArrayList<String> countriesBanned;
-    private Double rating;
+    private double rating;
+    private int  numLikes;
+    private int  numRatings;
 
     public Movie(Movie newMovie) {
         name =  newMovie.name;
@@ -73,9 +80,49 @@ public class Movie {
         this.countriesBanned = countriesBanned;
     }
 
+    public ObjectNode printToJson() {
+        ObjectNode movie = Output.objectMapper.createObjectNode();
+        movie.putPOJO("name",name);
+        movie.putPOJO("year",year);
+        movie.putPOJO("duration",duration);
+        movie.putPOJO("genres",genres);
+        movie.putPOJO("actors",actors);
+        movie.putPOJO("countriesBanned",countriesBanned);
+        movie.putPOJO("numLikes",numLikes);
+        movie.putPOJO("rating",rating);
+        movie.putPOJO("numRatings",numRatings);
+
+
+        return movie;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public int getNumLikes() {
+        return numLikes;
+    }
+
+    public void setNumLikes(int numLikes) {
+        this.numLikes = numLikes;
+    }
+
+    public int getNumRatings() {
+        return numRatings;
+    }
+
+    public void setNumRatings(int numRatings) {
+        this.numRatings = numRatings;
+    }
+
     @Override
     public String toString() {
-        return "Movie{" +
+        return "InpuClasses.Movie{" +
                 "name='" + name + '\'' +
                 ", year=" + year +
                 ", duration=" + duration +

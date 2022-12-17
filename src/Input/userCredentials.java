@@ -1,11 +1,16 @@
+package Input;
+
+import Output.Output;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 public class userCredentials {
     private String name;
     private String password;
     private AccType accountType;
     private String country;
     private int balance;
-
     private int token = 0;
+
 
     enum AccType{
         standard,
@@ -64,9 +69,22 @@ public class userCredentials {
         this.balance = balance;
     }
 
+    public int getToken() {
+        return token;
+    }
+    public ObjectNode outputToJson(){
+        ObjectNode uc = Output.objectMapper.createObjectNode();
+        uc.putPOJO("name",name);
+        uc.putPOJO("password",password);
+        uc.putPOJO("accountType",accountType);
+        uc.putPOJO("country",country);
+        uc.putPOJO("balance",String.valueOf(balance));
+        return uc;
+    }
+
     @Override
     public String toString() {
-        return "userCredentials{" +
+        return "InpuClasses.userCredentials{" +
                 "name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", accountType=" + accountType +

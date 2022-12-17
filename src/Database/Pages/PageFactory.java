@@ -1,4 +1,4 @@
-package Pages;
+package Database.Pages;
 
 public class PageFactory {
 
@@ -7,7 +7,8 @@ public class PageFactory {
             case "UAHomePage": return new UAHomePage();
             case "login": return new LoginPage();
             case "register": return new RegisterPage();
-            case "logout": return new UAHomePage();
+            case "homepage": return new HomePage();
+            case "movies": return new MoviesPage();
 
             default: System.out.println("Page name was not found");
             return null;
