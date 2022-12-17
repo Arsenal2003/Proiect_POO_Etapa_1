@@ -25,7 +25,6 @@ public class MoviesPage extends Page {
             db.getCurrentMovies().addAll(db.getMoviesUserCanSee());
             out.addCurrentMovies(db);
             return;}
-
         if (action.getPage().equals("logout")) {
             db.logout();
             return;

@@ -13,12 +13,14 @@ public class Movie {
     private ArrayList<String> actors;
     private ArrayList<String> countriesBanned;
     private double rating;
-    private int  numLikes;
-    private int  numRatings;
+    private int numLikes;
+    private int numRatings;
+
+    private double ratingSemiTotal = 0.0;
 
     public Movie(Movie newMovie) {
-        name =  newMovie.name;
-        year =  newMovie.year;
+        name = newMovie.name;
+        year = newMovie.year;
         duration = newMovie.duration;
         genres = new ArrayList<>();
         genres.addAll(newMovie.getGenres());
@@ -46,6 +48,14 @@ public class Movie {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public double getRatingSemiTotal() {
+        return ratingSemiTotal;
+    }
+
+    public void setRatingSemiTotal(double ratingSemiTotal) {
+        this.ratingSemiTotal = ratingSemiTotal;
     }
 
     public int getDuration() {
@@ -82,15 +92,15 @@ public class Movie {
 
     public ObjectNode printToJson() {
         ObjectNode movie = Output.objectMapper.createObjectNode();
-        movie.putPOJO("name",name);
-        movie.putPOJO("year",year);
-        movie.putPOJO("duration",duration);
-        movie.putPOJO("genres",genres);
-        movie.putPOJO("actors",actors);
-        movie.putPOJO("countriesBanned",countriesBanned);
-        movie.putPOJO("numLikes",numLikes);
-        movie.putPOJO("rating",rating);
-        movie.putPOJO("numRatings",numRatings);
+        movie.putPOJO("name", name);
+        movie.putPOJO("year", year);
+        movie.putPOJO("duration", duration);
+        movie.putPOJO("genres", genres);
+        movie.putPOJO("actors", actors);
+        movie.putPOJO("countriesBanned", countriesBanned);
+        movie.putPOJO("numLikes", numLikes);
+        movie.putPOJO("rating", rating);
+        movie.putPOJO("numRatings", numRatings);
 
 
         return movie;

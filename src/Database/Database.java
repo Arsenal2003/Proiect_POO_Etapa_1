@@ -64,16 +64,16 @@ public class Database {
         return currentMovies;
     }
 
-    public void setMoviesUserCanSee(ArrayList<Movie> moviesUserCanSee) {
-        this.moviesUserCanSee = moviesUserCanSee;
-    }
-
     public void setCurrentMovies(ArrayList<Movie> currentMovies) {
         this.currentMovies = currentMovies;
     }
 
     public ArrayList<Movie> getMoviesUserCanSee() {
         return moviesUserCanSee;
+    }
+
+    public void setMoviesUserCanSee(ArrayList<Movie> moviesUserCanSee) {
+        this.moviesUserCanSee = moviesUserCanSee;
     }
 
     public void setMoviesUserCanSee() {
@@ -124,14 +124,26 @@ public class Database {
         moviesUserCanSee = new ArrayList<>();
     }
 
-    public Movie movieExists(String name){
-        for(int i=0;i<moviesUserCanSee.size();i++){
-            if(moviesUserCanSee.get(i).getName().equals(name))
-                return  moviesUserCanSee.get(i);
+    public Movie movieExists(String name) {
+        for (int i = 0; i < moviesUserCanSee.size(); i++) {
+            if (moviesUserCanSee.get(i).getName().equals(name))
+                return moviesUserCanSee.get(i);
 
         }
         return null;
     }
+
+    public void reCalulateRating(Movie m) {
+        int nrpers = 0;
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getRatedMovies().contains(m)) {
+                nrpers++;
+            }
+
+        }
+        m.setRating(m.getRatingSemiTotal() / nrpers);
+    }
+
 
     public void addUser(userCredentials uc) {
         User newuser = new User();

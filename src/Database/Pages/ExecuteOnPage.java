@@ -1,6 +1,7 @@
 package Database.Pages;
 
 import Input.Action;
+import Input.Movie;
 import Input.userCredentials;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class ExecuteOnPage implements OnPageAction {
         if (action.getFeature().equals("search")) {
 
             for (int i = 0; i < db.getCurrentMovies().size(); i++) {
-                if (!db.getCurrentMovies().get(i).getName().contains(action.getStartsWith())) {
+                if (db.getCurrentMovies().get(i).getName().indexOf(action.getStartsWith()) != 0) {
                     db.getCurrentMovies().remove(i);
                     i--;
                 }
@@ -82,8 +83,6 @@ public class ExecuteOnPage implements OnPageAction {
             return;
         }
         if (action.getFeature().equals("filter")) {
-
-            //System.out.println(action.getFilters());
 
             if (action.getFilters().getContains() != null) {
                 // delete from current movies the ones that don't have the needed criteria
@@ -115,16 +114,19 @@ public class ExecuteOnPage implements OnPageAction {
 
             if (action.getFilters().getSort() != null) {
 
-                if (action.getFilters().getSort().getDuration() != null) {
+                if (action.getFilters().getSort().getDuration() != null && action.getFilters().getSort().getRating() != null) {
+                    if (action.getFilters().getSort().getDuration().equals("decreasing") && action.getFilters().getSort().getRating().equals("increasing")) {
+
+                    }
+
+                } else if (action.getFilters().getSort().getDuration() != null) {
                     if (action.getFilters().getSort().getDuration().equals("decreasing")) {
                         Collections.sort(db.getCurrentMovies(), (o1, o2) -> Integer.compare(o1.getDuration(), o2.getDuration()));
                     } else {
                         Collections.sort(db.getCurrentMovies(), (o1, o2) -> Integer.compare(o2.getDuration(), o1.getDuration()));
                     }
 
-                }
-
-                if (action.getFilters().getSort().getRating() != null) {
+                } else if (action.getFilters().getSort().getRating() != null) {
                     if (action.getFilters().getSort().getRating().equals("decreasing")) {
                         Collections.sort(db.getCurrentMovies(), (o1, o2) -> Double.compare(o1.getRating(), o2.getRating()));
 
@@ -144,21 +146,21 @@ public class ExecuteOnPage implements OnPageAction {
     }
 
     public void execute(UpgradesPage page, Database.Database db, Output.Output out, Action action) {
-        if (action.getFeature().equals("buy tokens")){
-            if(db.getCurrentUser().getCredentials().getBalance() - action.getCount() >= 0){
+        if (action.getFeature().equals("buy tokens")) {
+            if (db.getCurrentUser().getCredentials().getBalance() - action.getCount() >= 0) {
                 db.getCurrentUser().getCredentials().setBalance(db.getCurrentUser().getCredentials().getBalance() - action.getCount());
-                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken()+action.getCount());
+                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken() + action.getCount());
 
-            }else{
+            } else {
                 out.addError();
             }
-          return;
+            return;
         }
-        if (action.getFeature().equals("buy premium account")){
-            if(db.getCurrentUser().getCredentials().getToken() - 10 >= 0){
+        if (action.getFeature().equals("buy premium account")) {
+            if (db.getCurrentUser().getCredentials().getToken() - 10 >= 0) {
                 db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken() - 10);
                 db.getCurrentUser().getCredentials().setAccountType(userCredentials.AccType.premium);
-            }else{
+            } else {
                 out.addError();
             }
             return;
@@ -167,5 +169,98 @@ public class ExecuteOnPage implements OnPageAction {
     }
 
     public void execute(SeeDetailsPage page, Database.Database db, Output.Output out, Action action) {
+        if (action.getFeature().equals("purchase")) {
+
+            if (db.movieExists(db.getCurrentMovies().get(0).getName()) != null) {
+                Movie m = db.movieExists(db.getCurrentMovies().get(0).getName());
+                if (!db.getCurrentUser().getPurchasedMovies().contains(m)) {
+                    if (db.getCurrentUser().getCredentials().getAccountType() == userCredentials.AccType.premium) {
+                        if (db.getCurrentUser().getNumFreePremiumMovies() > 0) {
+                            db.getCurrentUser().setNumFreePremiumMovies(db.getCurrentUser().getNumFreePremiumMovies() - 1);
+                            db.getCurrentUser().getPurchasedMovies().add(m);
+                            out.addCurrentMovies(db);
+                            return;
+                        } else {
+                            if (db.getCurrentUser().getCredentials().getToken() >= 2) {
+                                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken() - 2);
+                                db.getCurrentUser().getPurchasedMovies().add(m);
+                                out.addCurrentMovies(db);
+                                return;
+                            } else {
+                                out.addError();
+                            }
+                        }
+                    } else {
+                        if (db.getCurrentUser().getCredentials().getToken() >= 2) {
+                            db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken() - 2);
+                            db.getCurrentUser().getPurchasedMovies().add(m);
+                            out.addCurrentMovies(db);
+                            return;
+                        } else {
+                            out.addError();
+                        }
+                    }
+                } else {
+                    out.addError();
+                    return;
+                }
+            }
+            out.addError();
+            return;
+        }
+        if (action.getFeature().equals("watch")) {
+            Movie m = db.movieExists(db.getCurrentMovies().get(0).getName());
+            if (m != null && db.getCurrentUser().getPurchasedMovies().contains(m)) {
+                if (!db.getCurrentUser().getWatchedMovies().contains(m)) {
+                    db.getCurrentUser().getWatchedMovies().add(m);
+                } else {
+                    out.addError();
+                    return;
+                }
+                out.addCurrentMovies(db);
+                return;
+            }
+            out.addError();
+            return;
+        }
+        if (action.getFeature().equals("like")) {
+            Movie m = db.movieExists(db.getCurrentMovies().get(0).getName());
+            if (m != null && db.getCurrentUser().getWatchedMovies().contains(m)) {
+                if (!db.getCurrentUser().getLikedMovies().contains(m)) {
+                    m.setNumLikes(m.getNumLikes() + 1);
+                    db.getCurrentUser().getLikedMovies().add(m);
+                } else {
+                    out.addError();
+                    return;
+                }
+                out.addCurrentMovies(db);
+                return;
+            }
+            out.addError();
+            return;
+
+        }
+        if (action.getFeature().equals("rate")) {
+            Movie m = db.movieExists(db.getCurrentMovies().get(0).getName());
+            if (m != null && db.getCurrentUser().getWatchedMovies().contains(m)) {
+                if (!db.getCurrentUser().getRatedMovies().contains(m)) {
+                    m.setNumRatings(m.getNumRatings() + 1);
+                    db.getCurrentUser().getRatedMovies().add(m);
+                    m.setRatingSemiTotal(m.getRatingSemiTotal() + action.getRate());
+                    db.reCalulateRating(m);
+                } else {
+                    out.addError();
+                    return;
+                }
+                out.addCurrentMovies(db);
+                return;
+            }
+            out.addError();
+            return;
+
+        }
+
+
+        out.addError();
     }
 }

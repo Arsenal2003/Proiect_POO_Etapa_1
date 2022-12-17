@@ -1,6 +1,7 @@
 package Input;
 
 import Output.Output;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
@@ -49,6 +50,8 @@ public class User {
         return likedMovies;
     }
 
+
+
     public void setLikedMovies(ArrayList<Movie> likedMovies) {
         this.likedMovies = likedMovies;
     }
@@ -61,18 +64,45 @@ public class User {
         this.watchedMovies = watchedMovies;
     }
 
+    public ArrayNode getCurrentMoviesToJson(ArrayList<Movie> movies) {
+        ArrayNode outmovies = Output.objectMapper.createArrayNode();
+        for (int i = 0; i < movies.size(); i++) {
+            outmovies.add(movies.get(i).printToJson());
+
+        }
+        return outmovies;
+    }
+
+
+
     public ObjectNode outputToJson() {
         ObjectNode usernode = Output.objectMapper.createObjectNode();
         usernode.putPOJO("credentials",credentials.outputToJson());
         usernode.putPOJO("tokensCount",credentials.getToken());
         usernode.putPOJO("numFreePremiumMovies", numFreePremiumMovies );
-        usernode.putPOJO("purchasedMovies",purchasedMovies);
-        usernode.putPOJO("watchedMovies",watchedMovies);
-        usernode.putPOJO("likedMovies",likedMovies);
-        usernode.putPOJO("ratedMovies",ratedMovies);
+        usernode.putPOJO("purchasedMovies",getCurrentMoviesToJson(purchasedMovies));
+        usernode.putPOJO("watchedMovies",getCurrentMoviesToJson(watchedMovies));
+        usernode.putPOJO("likedMovies",getCurrentMoviesToJson(likedMovies));
+        usernode.putPOJO("ratedMovies",getCurrentMoviesToJson(ratedMovies));
 
 
         return usernode;
+    }
+
+    public ArrayList<Movie> getPurchasedMovies() {
+        return purchasedMovies;
+    }
+
+    public void setPurchasedMovies(ArrayList<Movie> purchasedMovies) {
+        this.purchasedMovies = purchasedMovies;
+    }
+
+    public int getNumFreePremiumMovies() {
+        return numFreePremiumMovies;
+    }
+
+    public void setNumFreePremiumMovies(int numFreePremiumMovies) {
+        this.numFreePremiumMovies = numFreePremiumMovies;
     }
 
     @Override
