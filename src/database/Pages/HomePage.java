@@ -1,26 +1,29 @@
-package Database.Pages;
+package database.Pages;
 
-import Database.Database;
-import Input.Action;
+import input.Action;
 import Output.Output;
+import database.Database;
 
 import java.util.ArrayList;
 
-public class HomePage extends Page {
+public final class HomePage extends Page {
 
     public HomePage() {
-        super.name = "HomePage";
+        super.setName("HomePage");
     }
 
     @Override
-    public void onPageAction(OnPageAction action, Database db, Output out, Action currentAction) {
+    public void onPageAction(final OnPageAction action, final Database db, final Output out,
+                             final Action currentAction) {
         action.execute(this, db, out, currentAction);
     }
 
     @Override
-    public void changePageAction(Action action, Database db, Output out) {
+    public void changePageAction(final Action action, final Database db, final Output out) {
 
-        if (action.getPage().equals(super.name)) return;
+        if (action.getPage().equals(super.getName())) {
+            return;
+        }
         if (action.getPage().equals("logout")) {
             db.logout();
             return;

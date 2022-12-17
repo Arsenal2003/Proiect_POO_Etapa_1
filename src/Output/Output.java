@@ -1,6 +1,6 @@
 package Output;
 
-import Database.Database;
+import database.Database;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import static java.util.stream.Collectors.toCollection;
 
-public class Output {
+public final class Output {
     public static ObjectMapper objectMapper = new ObjectMapper();
     private ArrayNode outputFile;
 
@@ -31,7 +31,7 @@ public class Output {
 
     }
 
-    public void addLoginSuccess(Database db) {
+    public void addLoginSuccess(final Database db) {
         db.setCurrentMovies(new ArrayList<>());
         db.setMoviesUserCanSee(new ArrayList<>());
         db.setMoviesUserCanSee();
@@ -42,7 +42,7 @@ public class Output {
         outputFile.addPOJO(login);
 
     }
-    public void addCurrentMovies(Database db) {
+    public void addCurrentMovies(final Database db) {
         db.setMoviesUserCanSee();
         db.setCurrentMovies(db.getCurrentMovies().stream().distinct().collect(toCollection(ArrayList::new)));
         ObjectNode movies = objectMapper.createObjectNode();

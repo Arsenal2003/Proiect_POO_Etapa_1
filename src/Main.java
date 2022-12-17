@@ -1,9 +1,9 @@
-import Database.Database;
-import Database.Pages.ExecuteOnPage;
-import Database.Pages.PageFactory;
-import Input.InputData;
-import Input.Movie;
-import Input.User;
+import database.Database;
+import database.Pages.ExecuteOnPage;
+import database.Pages.PageFactory;
+import input.InputData;
+import input.Movie;
+import input.User;
 import Output.Output;
 import com.fasterxml.jackson.databind.ObjectWriter;
 

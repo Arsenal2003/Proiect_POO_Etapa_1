@@ -1,4 +1,4 @@
-package Input;
+package input;
 
 import Output.Output;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 
-public class User {
+public final class User {
     private userCredentials credentials;
     private ArrayList<Movie> purchasedMovies;
     private ArrayList<Movie> ratedMovies;
@@ -15,7 +15,7 @@ public class User {
 
     private int numFreePremiumMovies = 15;
 
-    public User(User newUser) {
+    public User(final User newUser) {
         credentials = new userCredentials(newUser.getCredentials());
         purchasedMovies = new ArrayList<>();
         ratedMovies = new ArrayList<>();
@@ -34,7 +34,7 @@ public class User {
         return credentials;
     }
 
-    public void setCredentials(userCredentials credentials) {
+    public void setCredentials(final userCredentials credentials) {
         this.credentials = credentials;
     }
 
@@ -42,7 +42,7 @@ public class User {
         return ratedMovies;
     }
 
-    public void setRatedMovies(ArrayList<Movie> ratedMovies) {
+    public void setRatedMovies(final ArrayList<Movie> ratedMovies) {
         this.ratedMovies = ratedMovies;
     }
 
@@ -51,8 +51,7 @@ public class User {
     }
 
 
-
-    public void setLikedMovies(ArrayList<Movie> likedMovies) {
+    public void setLikedMovies(final ArrayList<Movie> likedMovies) {
         this.likedMovies = likedMovies;
     }
 
@@ -60,11 +59,11 @@ public class User {
         return watchedMovies;
     }
 
-    public void setWatchedMovies(ArrayList<Movie> watchedMovies) {
+    public void setWatchedMovies(final ArrayList<Movie> watchedMovies) {
         this.watchedMovies = watchedMovies;
     }
 
-    public ArrayNode getCurrentMoviesToJson(ArrayList<Movie> movies) {
+    public ArrayNode getCurrentMoviesToJson(final ArrayList<Movie> movies) {
         ArrayNode outmovies = Output.objectMapper.createArrayNode();
         for (int i = 0; i < movies.size(); i++) {
             outmovies.add(movies.get(i).printToJson());
@@ -74,16 +73,15 @@ public class User {
     }
 
 
-
     public ObjectNode outputToJson() {
         ObjectNode usernode = Output.objectMapper.createObjectNode();
-        usernode.putPOJO("credentials",credentials.outputToJson());
-        usernode.putPOJO("tokensCount",credentials.getToken());
-        usernode.putPOJO("numFreePremiumMovies", numFreePremiumMovies );
-        usernode.putPOJO("purchasedMovies",getCurrentMoviesToJson(purchasedMovies));
-        usernode.putPOJO("watchedMovies",getCurrentMoviesToJson(watchedMovies));
-        usernode.putPOJO("likedMovies",getCurrentMoviesToJson(likedMovies));
-        usernode.putPOJO("ratedMovies",getCurrentMoviesToJson(ratedMovies));
+        usernode.putPOJO("credentials", credentials.outputToJson());
+        usernode.putPOJO("tokensCount", credentials.getToken());
+        usernode.putPOJO("numFreePremiumMovies", numFreePremiumMovies);
+        usernode.putPOJO("purchasedMovies", getCurrentMoviesToJson(purchasedMovies));
+        usernode.putPOJO("watchedMovies", getCurrentMoviesToJson(watchedMovies));
+        usernode.putPOJO("likedMovies", getCurrentMoviesToJson(likedMovies));
+        usernode.putPOJO("ratedMovies", getCurrentMoviesToJson(ratedMovies));
 
 
         return usernode;
@@ -93,7 +91,7 @@ public class User {
         return purchasedMovies;
     }
 
-    public void setPurchasedMovies(ArrayList<Movie> purchasedMovies) {
+    public void setPurchasedMovies(final ArrayList<Movie> purchasedMovies) {
         this.purchasedMovies = purchasedMovies;
     }
 
@@ -101,14 +99,9 @@ public class User {
         return numFreePremiumMovies;
     }
 
-    public void setNumFreePremiumMovies(int numFreePremiumMovies) {
+    public void setNumFreePremiumMovies(final int numFreePremiumMovies) {
         this.numFreePremiumMovies = numFreePremiumMovies;
     }
 
-    @Override
-    public String toString() {
-        return "InpuClasses.User{" +
-                "credentials=" + credentials +
-                '}';
-    }
+
 }

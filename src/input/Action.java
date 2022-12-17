@@ -1,4 +1,4 @@
-package Input;
+package input;
 
 public final class Action {
     private String type;
@@ -89,15 +89,5 @@ public final class Action {
         this.filters = filters;
     }
 
-    @Override
-    public String toString() {
-        return "InpuClasses.Action{" +
-                "type='" + type + '\'' +
-                ", page='" + page + '\'' +
-                ", feature='" + feature + '\'' +
-                ", credentials=" + credentials +
-                ", startsWith='" + startsWith + '\'' +
-                ", movie='" + movie + '\'' +
-                '}';
-    }
+
 }

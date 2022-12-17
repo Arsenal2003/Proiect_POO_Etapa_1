@@ -1,11 +1,11 @@
-package Input;
+package input;
 
 import Output.Output;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 
-public class Movie {
+public final class Movie {
     private String name;
     private int year;
     private int duration;
@@ -18,7 +18,7 @@ public class Movie {
 
     private double ratingSemiTotal = 0.0;
 
-    public Movie(Movie newMovie) {
+    public Movie(final Movie newMovie) {
         name = newMovie.name;
         year = newMovie.year;
         duration = newMovie.duration;
@@ -38,7 +38,7 @@ public class Movie {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -46,7 +46,7 @@ public class Movie {
         return year;
     }
 
-    public void setYear(int year) {
+    public void setYear(final int year) {
         this.year = year;
     }
 
@@ -54,7 +54,7 @@ public class Movie {
         return ratingSemiTotal;
     }
 
-    public void setRatingSemiTotal(double ratingSemiTotal) {
+    public void setRatingSemiTotal(final double ratingSemiTotal) {
         this.ratingSemiTotal = ratingSemiTotal;
     }
 
@@ -62,7 +62,7 @@ public class Movie {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(final int duration) {
         this.duration = duration;
     }
 
@@ -70,7 +70,7 @@ public class Movie {
         return genres;
     }
 
-    public void setGenres(ArrayList<String> genres) {
+    public void setGenres(final ArrayList<String> genres) {
         this.genres = genres;
     }
 
@@ -78,7 +78,7 @@ public class Movie {
         return actors;
     }
 
-    public void setActors(ArrayList<String> actors) {
+    public void setActors(final ArrayList<String> actors) {
         this.actors = actors;
     }
 
@@ -86,7 +86,7 @@ public class Movie {
         return countriesBanned;
     }
 
-    public void setCountriesBanned(ArrayList<String> countriesBanned) {
+    public void setCountriesBanned(final ArrayList<String> countriesBanned) {
         this.countriesBanned = countriesBanned;
     }
 
@@ -110,7 +110,7 @@ public class Movie {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(final double rating) {
         this.rating = rating;
     }
 
@@ -118,7 +118,7 @@ public class Movie {
         return numLikes;
     }
 
-    public void setNumLikes(int numLikes) {
+    public void setNumLikes(final int numLikes) {
         this.numLikes = numLikes;
     }
 
@@ -126,20 +126,9 @@ public class Movie {
         return numRatings;
     }
 
-    public void setNumRatings(int numRatings) {
+    public void setNumRatings(final int numRatings) {
         this.numRatings = numRatings;
     }
 
-    @Override
-    public String toString() {
-        return "InpuClasses.Movie{" +
-                "name='" + name + '\'' +
-                ", year=" + year +
-                ", duration=" + duration +
-                ", genres=" + genres +
-                ", actors=" + actors +
-                ", countriesBanned=" + countriesBanned +
-                ", rating=" + rating +
-                '}';
-    }
+
 }

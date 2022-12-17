@@ -1,9 +1,9 @@
-package Input;
+package input;
 
 import Output.Output;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class userCredentials {
+public final class userCredentials {
     private String name;
     private String password;
     private AccType accountType;
@@ -12,12 +12,7 @@ public class userCredentials {
     private int token = 0;
 
 
-    public enum AccType{
-        standard,
-        premium
-    }
-
-    public userCredentials(userCredentials newUserCred) {
+    public userCredentials(final userCredentials newUserCred) {
         name = newUserCred.name;
         password = newUserCred.password;
         token = newUserCred.token;
@@ -33,7 +28,7 @@ public class userCredentials {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -41,7 +36,7 @@ public class userCredentials {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -49,7 +44,7 @@ public class userCredentials {
         return accountType;
     }
 
-    public void setAccountType(AccType accountType) {
+    public void setAccountType(final AccType accountType) {
         this.accountType = accountType;
     }
 
@@ -57,7 +52,7 @@ public class userCredentials {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
@@ -65,7 +60,7 @@ public class userCredentials {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(final int balance) {
         this.balance = balance;
     }
 
@@ -73,29 +68,24 @@ public class userCredentials {
         return token;
     }
 
-    public void setToken(int token) {
+    public void setToken(final int token) {
         this.token = token;
     }
 
-    public ObjectNode outputToJson(){
+    public ObjectNode outputToJson() {
         ObjectNode uc = Output.objectMapper.createObjectNode();
-        uc.putPOJO("name",name);
-        uc.putPOJO("password",password);
-        uc.putPOJO("accountType",accountType);
-        uc.putPOJO("country",country);
-        uc.putPOJO("balance",String.valueOf(balance));
+        uc.putPOJO("name", name);
+        uc.putPOJO("password", password);
+        uc.putPOJO("accountType", accountType);
+        uc.putPOJO("country", country);
+        uc.putPOJO("balance", String.valueOf(balance));
         return uc;
     }
 
-    @Override
-    public String toString() {
-        return "InpuClasses.userCredentials{" +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", accountType=" + accountType +
-                ", country='" + country + '\'' +
-                ", balance=" + balance +
-                ", token=" + token +
-                '}';
+
+
+    public enum AccType {
+        standard,
+        premium
     }
 }

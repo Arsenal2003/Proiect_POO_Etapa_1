@@ -1,34 +1,39 @@
-package Database.Pages;
+package database.Pages;
 
-import Input.Action;
-import Input.Movie;
-import Input.userCredentials;
+import input.Action;
+import input.Movie;
+import input.userCredentials;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static input.InputData.getPremiumACC;
 import static java.util.stream.Collectors.toCollection;
 
-public class ExecuteOnPage implements OnPageAction {
+public final class ExecuteOnPage implements OnPageAction {
 
 
     @Override
-    public void execute(Page page, Database.Database db, Output.Output out, Action action) {
+    public void execute(final Page page, final database.Database db, final Output.Output out,
+                        final Action action) {
         System.out.println("??? esti dus ai uitat sa adaugi si in interfata  ???");
     }
 
     @Override
-    public void execute(UAHomePage page, Database.Database db, Output.Output out, Action action) {
+    public void execute(final UAHomePage page, final database.Database db, final Output.Output out,
+                        final Action action) {
         out.addError();
     }
 
     @Override
-    public void execute(HomePage page, Database.Database db, Output.Output out, Action action) {
+    public void execute(final HomePage page, final database.Database db, final Output.Output out,
+                        final Action action) {
         out.addError();
     }
 
     @Override
-    public void execute(RegisterPage page, Database.Database db, Output.Output out, Action action) {
+    public void execute(final RegisterPage page, final database.Database db,
+                        final Output.Output out, final Action action) {
         if (action.getFeature().equals("register")) {
             if (db.findUser(action.getCredentials().getName()) == null) {
                 db.addUser(action.getCredentials());
@@ -47,10 +52,12 @@ public class ExecuteOnPage implements OnPageAction {
     }
 
     @Override
-    public void execute(LoginPage page, Database.Database db, Output.Output out, Action action) {
+    public void execute(final LoginPage page, final database.Database db, final Output.Output out,
+                        final Action action) {
 
         if (action.getFeature().equals("login")) {
-            if (db.userLoginOk(action.getCredentials().getName(), action.getCredentials().getPassword())) {
+            if (db.userLoginOk(action.getCredentials().getName(), action.getCredentials()
+                    .getPassword())) {
                 db.setCurrentUser(db.findUser(action.getCredentials().getName()));
                 out.addLoginSuccess(db);
                 db.setCurrentPage(PageFactory.createPage("homepage"));
@@ -65,10 +72,20 @@ public class ExecuteOnPage implements OnPageAction {
         }
     }
 
-    public void execute(MoviesPage page, Database.Database db, Output.Output out, Action action) {
+    /**
+     * executes the action provided on the database
+     *
+     * @param page   the current page the action was called from
+     * @param db     the current database
+     * @param out    the connection to the output file
+     * @param action the action we need to perform on the db
+     */
+    public void execute(final MoviesPage page, final database.Database db, final Output.Output out,
+                        final Action action) {
         db.setCurrentMovies(new ArrayList<>());
         db.getCurrentMovies().addAll(db.getMoviesUserCanSee());
-        db.setCurrentMovies(db.getCurrentMovies().stream().distinct().collect(toCollection(ArrayList::new)));
+        db.setCurrentMovies(db.getCurrentMovies().stream().distinct()
+                .collect(toCollection(ArrayList::new)));
         if (action.getFeature().equals("search")) {
 
             for (int i = 0; i < db.getCurrentMovies().size(); i++) {
@@ -90,7 +107,8 @@ public class ExecuteOnPage implements OnPageAction {
                 if (action.getFilters().getContains().getActors() != null) {
                     for (int i = 0; i < action.getFilters().getContains().getActors().size(); i++) {
                         for (int j = 0; j < db.getCurrentMovies().size(); j++) {
-                            if (!db.getCurrentMovies().get(j).getActors().contains(action.getFilters().getContains().getActors().get(i))) {
+                            if (!db.getCurrentMovies().get(j).getActors().contains(action.
+                                    getFilters().getContains().getActors().get(i))) {
                                 db.getCurrentMovies().remove(j);
                                 j--;
                             }
@@ -100,7 +118,8 @@ public class ExecuteOnPage implements OnPageAction {
                 if (action.getFilters().getContains().getGenre() != null) {
                     for (int i = 0; i < action.getFilters().getContains().getGenre().size(); i++) {
                         for (int j = 0; j < db.getCurrentMovies().size(); j++) {
-                            if (!db.getCurrentMovies().get(j).getGenres().contains(action.getFilters().getContains().getGenre().get(i))) {
+                            if (!db.getCurrentMovies().get(j).getGenres().contains(action
+                                    .getFilters().getContains().getGenre().get(i))) {
                                 db.getCurrentMovies().remove(j);
                                 j--;
                             }
@@ -113,28 +132,24 @@ public class ExecuteOnPage implements OnPageAction {
             }
 
             if (action.getFilters().getSort() != null) {
-
-                if (action.getFilters().getSort().getDuration() != null && action.getFilters().getSort().getRating() != null) {
-                    if (action.getFilters().getSort().getDuration().equals("decreasing") && action.getFilters().getSort().getRating().equals("increasing")) {
-
-                    }
-
-                } else if (action.getFilters().getSort().getDuration() != null) {
+               if (action.getFilters().getSort().getDuration() != null) {
                     if (action.getFilters().getSort().getDuration().equals("decreasing")) {
-                        Collections.sort(db.getCurrentMovies(), (o1, o2) -> Integer.compare(o1.getDuration(), o2.getDuration()));
+                        Collections.sort(db.getCurrentMovies(),
+                                (o1, o2) -> Integer.compare(o1.getDuration(), o2.getDuration()));
                     } else {
-                        Collections.sort(db.getCurrentMovies(), (o1, o2) -> Integer.compare(o2.getDuration(), o1.getDuration()));
+                        Collections.sort(db.getCurrentMovies(),
+                                (o1, o2) -> Integer.compare(o2.getDuration(), o1.getDuration()));
                     }
 
                 } else if (action.getFilters().getSort().getRating() != null) {
                     if (action.getFilters().getSort().getRating().equals("decreasing")) {
-                        Collections.sort(db.getCurrentMovies(), (o1, o2) -> Double.compare(o1.getRating(), o2.getRating()));
+                        Collections.sort(db.getCurrentMovies(),
+                                (o1, o2) -> Double.compare(o1.getRating(), o2.getRating()));
 
                     } else {
-                        Collections.sort(db.getCurrentMovies(), (o1, o2) -> Double.compare(o2.getRating(), o1.getRating()));
-
+                        Collections.sort(db.getCurrentMovies(),
+                                (o1, o2) -> Double.compare(o2.getRating(), o1.getRating()));
                     }
-
                 }
 
             }
@@ -145,11 +160,22 @@ public class ExecuteOnPage implements OnPageAction {
         out.addError();
     }
 
-    public void execute(UpgradesPage page, Database.Database db, Output.Output out, Action action) {
+    /**
+     * executes the action provided on the database
+     *
+     * @param page   the current page the action was called from
+     * @param db     the current database
+     * @param out    the connection to the output file
+     * @param action the action we need to perform on the db
+     */
+    public void execute(final UpgradesPage page, final database.Database db,
+                        final Output.Output out, final Action action) {
         if (action.getFeature().equals("buy tokens")) {
             if (db.getCurrentUser().getCredentials().getBalance() - action.getCount() >= 0) {
-                db.getCurrentUser().getCredentials().setBalance(db.getCurrentUser().getCredentials().getBalance() - action.getCount());
-                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken() + action.getCount());
+                db.getCurrentUser().getCredentials().setBalance(db.getCurrentUser()
+                        .getCredentials().getBalance() - action.getCount());
+                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser()
+                        .getCredentials().getToken() + action.getCount());
 
             } else {
                 out.addError();
@@ -157,9 +183,11 @@ public class ExecuteOnPage implements OnPageAction {
             return;
         }
         if (action.getFeature().equals("buy premium account")) {
-            if (db.getCurrentUser().getCredentials().getToken() - 10 >= 0) {
-                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken() - 10);
-                db.getCurrentUser().getCredentials().setAccountType(userCredentials.AccType.premium);
+            if (db.getCurrentUser().getCredentials().getToken() - getPremiumACC() >= 0) {
+                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser()
+                        .getCredentials().getToken() - getPremiumACC());
+                db.getCurrentUser().getCredentials()
+                        .setAccountType(userCredentials.AccType.premium);
             } else {
                 out.addError();
             }
@@ -168,21 +196,33 @@ public class ExecuteOnPage implements OnPageAction {
         out.addError();
     }
 
-    public void execute(SeeDetailsPage page, Database.Database db, Output.Output out, Action action) {
+    /**
+     * executes the action provided on the database
+     *
+     * @param page   the current page the action was called from
+     * @param db     the current database
+     * @param out    the connection to the output file
+     * @param action the action we need to perform on the db
+     */
+    public void execute(final SeeDetailsPage page, final database.Database db,
+                        final Output.Output out, final Action action) {
         if (action.getFeature().equals("purchase")) {
 
             if (db.movieExists(db.getCurrentMovies().get(0).getName()) != null) {
                 Movie m = db.movieExists(db.getCurrentMovies().get(0).getName());
                 if (!db.getCurrentUser().getPurchasedMovies().contains(m)) {
-                    if (db.getCurrentUser().getCredentials().getAccountType() == userCredentials.AccType.premium) {
+                    if (db.getCurrentUser().getCredentials().getAccountType() == userCredentials
+                            .AccType.premium) {
                         if (db.getCurrentUser().getNumFreePremiumMovies() > 0) {
-                            db.getCurrentUser().setNumFreePremiumMovies(db.getCurrentUser().getNumFreePremiumMovies() - 1);
+                            db.getCurrentUser().setNumFreePremiumMovies(db.getCurrentUser()
+                                    .getNumFreePremiumMovies() - 1);
                             db.getCurrentUser().getPurchasedMovies().add(m);
                             out.addCurrentMovies(db);
                             return;
                         } else {
                             if (db.getCurrentUser().getCredentials().getToken() >= 2) {
-                                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken() - 2);
+                                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser()
+                                        .getCredentials().getToken() - 2);
                                 db.getCurrentUser().getPurchasedMovies().add(m);
                                 out.addCurrentMovies(db);
                                 return;
@@ -192,7 +232,8 @@ public class ExecuteOnPage implements OnPageAction {
                         }
                     } else {
                         if (db.getCurrentUser().getCredentials().getToken() >= 2) {
-                            db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken() - 2);
+                            db.getCurrentUser().getCredentials().setToken(db.getCurrentUser()
+                                    .getCredentials().getToken() - 2);
                             db.getCurrentUser().getPurchasedMovies().add(m);
                             out.addCurrentMovies(db);
                             return;
