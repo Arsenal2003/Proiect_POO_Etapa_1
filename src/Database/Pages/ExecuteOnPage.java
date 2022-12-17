@@ -1,9 +1,12 @@
 package Database.Pages;
 
 import Input.Action;
+import Input.userCredentials;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
+import static java.util.stream.Collectors.toCollection;
 
 public class ExecuteOnPage implements OnPageAction {
 
@@ -62,32 +65,33 @@ public class ExecuteOnPage implements OnPageAction {
     }
 
     public void execute(MoviesPage page, Database.Database db, Output.Output out, Action action) {
+        db.setCurrentMovies(new ArrayList<>());
+        db.getCurrentMovies().addAll(db.getMoviesUserCanSee());
+        db.setCurrentMovies(db.getCurrentMovies().stream().distinct().collect(toCollection(ArrayList::new)));
         if (action.getFeature().equals("search")) {
-            db.setCurrentMovies(new ArrayList<>());
-            db.getCurrentMovies().addAll(db.getMoviesUserCanSee());
-
 
             for (int i = 0; i < db.getCurrentMovies().size(); i++) {
-                if (db.getCurrentMovies().get(i).getName().indexOf(action.getStartsWith()) == -1) {
+                if (!db.getCurrentMovies().get(i).getName().contains(action.getStartsWith())) {
                     db.getCurrentMovies().remove(i);
                     i--;
                 }
 
             }
             out.addCurrentMovies(db);
+            db.setCurrentMovies(new ArrayList<>());
             return;
         }
         if (action.getFeature().equals("filter")) {
-            db.setCurrentMovies(new ArrayList<>());
-            db.getCurrentMovies().addAll(db.getMoviesUserCanSee());
+
             //System.out.println(action.getFilters());
 
             if (action.getFilters().getContains() != null) {
                 // delete from current movies the ones that don't have the needed criteria
+
                 if (action.getFilters().getContains().getActors() != null) {
                     for (int i = 0; i < action.getFilters().getContains().getActors().size(); i++) {
                         for (int j = 0; j < db.getCurrentMovies().size(); j++) {
-                            if (db.getCurrentMovies().get(j).getActors().contains(action.getFilters().getContains().getActors().get(i))) {
+                            if (!db.getCurrentMovies().get(j).getActors().contains(action.getFilters().getContains().getActors().get(i))) {
                                 db.getCurrentMovies().remove(j);
                                 j--;
                             }
@@ -97,7 +101,7 @@ public class ExecuteOnPage implements OnPageAction {
                 if (action.getFilters().getContains().getGenre() != null) {
                     for (int i = 0; i < action.getFilters().getContains().getGenre().size(); i++) {
                         for (int j = 0; j < db.getCurrentMovies().size(); j++) {
-                            if (db.getCurrentMovies().get(j).getGenres().contains(action.getFilters().getContains().getGenre().get(i))) {
+                            if (!db.getCurrentMovies().get(j).getGenres().contains(action.getFilters().getContains().getGenre().get(i))) {
                                 db.getCurrentMovies().remove(j);
                                 j--;
                             }
@@ -105,7 +109,10 @@ public class ExecuteOnPage implements OnPageAction {
                     }
 
                 }
+
+
             }
+
             if (action.getFilters().getSort() != null) {
 
                 if (action.getFilters().getSort().getDuration() != null) {
@@ -130,11 +137,35 @@ public class ExecuteOnPage implements OnPageAction {
 
             }
             out.addCurrentMovies(db);
+            db.setCurrentMovies(new ArrayList<>());
             return;
         }
         out.addError();
     }
 
-    // public void execute(UpgradesPage page, Database.Database db, Output.Output out, Action action) {}
-    // public void execute(SeeDetailsPage page, Database.Database db, Output.Output out, Action action) {}
+    public void execute(UpgradesPage page, Database.Database db, Output.Output out, Action action) {
+        if (action.getFeature().equals("buy tokens")){
+            if(db.getCurrentUser().getCredentials().getBalance() - action.getCount() >= 0){
+                db.getCurrentUser().getCredentials().setBalance(db.getCurrentUser().getCredentials().getBalance() - action.getCount());
+                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken()+action.getCount());
+
+            }else{
+                out.addError();
+            }
+          return;
+        }
+        if (action.getFeature().equals("buy premium account")){
+            if(db.getCurrentUser().getCredentials().getToken() - 10 >= 0){
+                db.getCurrentUser().getCredentials().setToken(db.getCurrentUser().getCredentials().getToken() - 10);
+                db.getCurrentUser().getCredentials().setAccountType(userCredentials.AccType.premium);
+            }else{
+                out.addError();
+            }
+            return;
+        }
+        out.addError();
+    }
+
+    public void execute(SeeDetailsPage page, Database.Database db, Output.Output out, Action action) {
+    }
 }

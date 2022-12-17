@@ -12,7 +12,7 @@ public class userCredentials {
     private int token = 0;
 
 
-    enum AccType{
+    public enum AccType{
         standard,
         premium
     }
@@ -72,6 +72,11 @@ public class userCredentials {
     public int getToken() {
         return token;
     }
+
+    public void setToken(int token) {
+        this.token = token;
+    }
+
     public ObjectNode outputToJson(){
         ObjectNode uc = Output.objectMapper.createObjectNode();
         uc.putPOJO("name",name);

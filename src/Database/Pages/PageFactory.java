@@ -9,6 +9,8 @@ public class PageFactory {
             case "register": return new RegisterPage();
             case "homepage": return new HomePage();
             case "movies": return new MoviesPage();
+            case "see details": return new SeeDetailsPage();
+            case "upgrades": return new UpgradesPage();
 
             default: System.out.println("Page name was not found");
             return null;

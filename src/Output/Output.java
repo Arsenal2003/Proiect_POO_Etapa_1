@@ -30,6 +30,8 @@ public class Output {
     }
 
     public void addLoginSuccess(Database db) {
+        db.setCurrentMovies(new ArrayList<>());
+        db.setMoviesUserCanSee(new ArrayList<>());
         db.setMoviesUserCanSee();
         ObjectNode login = objectMapper.createObjectNode();
         login.putPOJO("error", null);
@@ -45,7 +47,7 @@ public class Output {
         movies.putPOJO("currentMoviesList", db.getCurrentMoviesToJson());
         movies.putPOJO("currentUser", db.getCurrentUser().outputToJson());
         outputFile.addPOJO(movies);
-
+        db.setCurrentMovies(new ArrayList<>());
     }
 
 }

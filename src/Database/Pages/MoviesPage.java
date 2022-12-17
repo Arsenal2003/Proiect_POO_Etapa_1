@@ -2,6 +2,7 @@ package Database.Pages;
 
 import Database.Database;
 import Input.Action;
+import Input.Movie;
 import Output.Output;
 
 import java.util.ArrayList;
@@ -18,7 +19,12 @@ public class MoviesPage extends Page {
     }
 
     public void changePageAction(Action action, Database db, Output out) {
-        if (action.getPage().equals(super.name)) return;
+        if (action.getPage().equals(super.name)) {
+            db.setCurrentPage(PageFactory.createPage("movies"));
+            db.setCurrentMovies(new ArrayList<>());
+            db.getCurrentMovies().addAll(db.getMoviesUserCanSee());
+            out.addCurrentMovies(db);
+            return;}
 
         if (action.getPage().equals("logout")) {
             db.logout();
@@ -29,7 +35,20 @@ public class MoviesPage extends Page {
             db.setCurrentPage(PageFactory.createPage("homepage"));
             return;
         }
+        if (action.getPage().equals("see details")) {
 
+            if (db.movieExists(action.getMovie()) == null) {
+                out.addError();
+            } else {
+                Movie m = db.movieExists(action.getMovie());
+                db.setCurrentMovies(new ArrayList<>());
+                db.getCurrentMovies().add(m);
+                out.addCurrentMovies(db);
+
+            }
+                db.setCurrentPage(PageFactory.createPage("see details"));
+            return;
+        }
 
 
         out.addError();

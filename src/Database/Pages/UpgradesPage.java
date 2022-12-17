@@ -6,10 +6,10 @@ import Output.Output;
 
 import java.util.ArrayList;
 
-public class HomePage extends Page {
+public class UpgradesPage extends Page{
 
-    public HomePage() {
-        super.name = "HomePage";
+    public UpgradesPage() {
+        super.name = "upgrades";
     }
 
     @Override
@@ -17,12 +17,16 @@ public class HomePage extends Page {
         action.execute(this, db, out, currentAction);
     }
 
-    @Override
     public void changePageAction(Action action, Database db, Output out) {
-
         if (action.getPage().equals(super.name)) return;
+
         if (action.getPage().equals("logout")) {
             db.logout();
+            return;
+        }
+        if (action.getPage().equals("homepage")) {
+            db.setCurrentMovies(new ArrayList<>());
+            db.setCurrentPage(PageFactory.createPage("homepage"));
             return;
         }
         if (action.getPage().equals("movies")) {
@@ -32,14 +36,7 @@ public class HomePage extends Page {
             out.addCurrentMovies(db);
             return;
         }
-        if (action.getPage().equals("upgrades")) {
-            db.setCurrentMovies(new ArrayList<>());
-            db.setCurrentPage(PageFactory.createPage("upgrades"));
-            return;
-        }
-
-
         out.addError();
-
     }
+
 }

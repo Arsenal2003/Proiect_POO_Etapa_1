@@ -64,6 +64,10 @@ public class Database {
         return currentMovies;
     }
 
+    public void setMoviesUserCanSee(ArrayList<Movie> moviesUserCanSee) {
+        this.moviesUserCanSee = moviesUserCanSee;
+    }
+
     public void setCurrentMovies(ArrayList<Movie> currentMovies) {
         this.currentMovies = currentMovies;
     }
@@ -118,6 +122,15 @@ public class Database {
         currentUser = null;
         currentMovies = new ArrayList<>();
         moviesUserCanSee = new ArrayList<>();
+    }
+
+    public Movie movieExists(String name){
+        for(int i=0;i<moviesUserCanSee.size();i++){
+            if(moviesUserCanSee.get(i).getName().equals(name))
+                return  moviesUserCanSee.get(i);
+
+        }
+        return null;
     }
 
     public void addUser(userCredentials uc) {
